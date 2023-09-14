@@ -7,6 +7,7 @@ variable "tags" {
 variable "topic_name" {
   description = "The name of the SNS topic to create"
   type        = string
+  default     = null
 }
 
 variable "sns_topic_kms_key_id" {

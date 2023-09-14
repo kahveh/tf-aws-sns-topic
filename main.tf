@@ -1,5 +1,5 @@
 locals {
-  sns_topic_name              = var.topic_name || "sns-topic"
+  sns_topic_name              = try(var.topic_name, "sns-topic")
   enable_delivery_status_logs = var.enable_delivery_status_logs
   create_sns_delivery_role    = var.enable_delivery_status_logs && var.delivery_status_lambda_role_arn == ""
   sns_feedback_role           = local.create_sns_delivery_role ? aws_iam_role.sns_delivery_role[0].arn : var.delivery_status_lambda_role_arn
