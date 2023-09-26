@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 locals {
   sns_topic_name              = try(var.topic_name, "sns-topic")
   enable_delivery_status_logs = var.enable_delivery_status_logs
@@ -55,4 +57,39 @@ resource "aws_iam_role" "sns_delivery_role" {
   assume_role_policy    = data.aws_iam_policy_document.sns_delivery[0].json
 
   tags = merge(var.tags, var.delivery_status_role_tags)
+}
+
+data "aws_iam_policy_document" "this" {
+  policy_id = "__default_policy"
+  statement {
+    actions = [
+      "SNS:Subscribe",
+      "SNS:SetTopicAttributes",
+      "SNS:RemovePermissions",
+      "SNS:Receive",
+      "SNS:Publish",
+      "SNS:ListSubscriptionsByTopic",
+      "SNS:GetTopicAttributes",
+      "SNS:DeleteTopic",
+      "SNS:AddPermission"
+    ]
+    condition {
+      test     = "StringEquals"
+      values   = var.sns_account_ids || [data.aws_caller_identity.current.account_id]
+      variable = "AWS:SourceOwner"
+    }
+    effect = "Allow"
+    principals {
+      identifiers = ["*"]
+      type        = "AWS"
+    }
+    resources = [
+      aws_sns_topic.this.arn
+    ]
+  }
+}
+
+resource "aws_sns_topic_policy" "this" {
+  arn    = aws_sns_topic.this.arn
+  policy = data.aws_iam_policy_document.this.json
 }

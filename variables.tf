@@ -70,3 +70,8 @@ variable "delivery_status_role_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "sns_account_ids" {
+  type    = list(string)
+  default = null
+}
