@@ -75,7 +75,7 @@ data "aws_iam_policy_document" "this" {
     ]
     condition {
       test     = "StringEquals"
-      values   = var.sns_account_ids || [data.aws_caller_identity.current.account_id]
+      values   = var.sns_account_ids
       variable = "AWS:SourceOwner"
     }
     effect = "Allow"
