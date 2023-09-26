@@ -66,7 +66,6 @@ data "aws_iam_policy_document" "this" {
       "SNS:Subscribe",
       "SNS:SetTopicAttributes",
       "SNS:RemovePermissions",
-      "SNS:Receive",
       "SNS:Publish",
       "SNS:ListSubscriptionsByTopic",
       "SNS:GetTopicAttributes",
