@@ -63,14 +63,14 @@ data "aws_iam_policy_document" "this" {
   policy_id = "__default_policy"
   statement {
     actions = [
-      "SNS:Subscribe",
-      "SNS:SetTopicAttributes",
-      "SNS:RemovePermissions",
-      "SNS:Publish",
-      "SNS:ListSubscriptionsByTopic",
       "SNS:GetTopicAttributes",
+      "SNS:SetTopicAttributes",
+      "SNS:AddPermission",
+      "SNS:RemovePermission",
       "SNS:DeleteTopic",
-      "SNS:AddPermission"
+      "SNS:Subscribe",
+      "SNS:ListSubscriptionsByTopic",
+      "SNS:Publish"
     ]
     condition {
       test     = "StringEquals"
